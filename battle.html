@@ -2,11 +2,40 @@
 <html lang="en_EN">
     <head>
         <title>Webwars Gamefield</title>
+        <script language="javascript" src="Battlefield.js"></script>
+        <script language="javascript">
+function notify(state) {
+    if (state.type == 'marked') {
+        document.getElementById('markType').innerHTML = state.name;
+        document.getElementById('markX').innerHTML = state.x;
+        document.getElementById('markY').innerHTML = state.y;
+    }
+}
+
+function init() {
+    var battlefield = new Battlefield(
+        document.getElementById('gamefield'), 10, 10, 32, notify);
+    var water = {name: 'water', img: new Image()};
+    water.img.src = 'water.jpg';
+    battlefield.setField(water, 1, 1);
+    battlefield.draw();
+}
+        </script>
+        <style>
+div {
+    display: inline;
+}
+        </style>
     </head>
-    <body>
+    <body onload="init()">
         <h1>Webwars Gamefield</h1>
-        <div id="gamefield">
+        <canvas id="gamefield" width="640" height="480">
             Sorry your browser doesn't support html5.
+        </canvas><br />
+        <div id="State">
+            x: <div id="markX"></div> - 
+            y: <div id="markY"></div> -
+            Type: <div id="markType"></div>
         </div>
     </body>
 </html>

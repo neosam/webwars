@@ -1,10 +1,18 @@
-function Battlefield(elem, width, height, tileSize) {
+function Battlefield(elem, width, height, tileSize, notify) {
     var context = elem.getContext('2d');
     var battleField = new Array(width);
-    var position = new Object();
-    position.x = 0;
-    position.y = 0;
+    var position = {x: 0, y: 0};
+    var marked = {x: 0, y: 0};
     
+    function notifyMarked() {
+        notify({
+                type: 'marked',
+                x: marked.x,
+                y: marked.y,
+                name: battleField[marked.x][marked.y].type.name
+                });
+    }
+
     function initBattlefield() {
         var grass = new Image();
         grass.src = 'grass.jpg';
@@ -21,6 +29,20 @@ function Battlefield(elem, width, height, tileSize) {
                 battleField[x][y] = field;
             }
         }
+
+        function click(e) {
+            var x = Math.floor(e.offsetX / tileSize);
+            var y = Math.floor(e.offsetY / tileSize);
+            marked = {x: x, y: y};
+            notifyMarked();
+        }
+        elem.onmousedown = click;
+
+        notifyMarked();
+    }
+
+    this.setField = function(field, x, y) {
+        battleField[x][y].type = field;
     }
 
     this.draw = function() {
