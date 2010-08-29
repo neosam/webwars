@@ -9,6 +9,10 @@ function notify(state) {
         document.getElementById('markType').innerHTML = state.name;
         document.getElementById('markX').innerHTML = state.x;
         document.getElementById('markY').innerHTML = state.y;
+        if (state.unit == undefined)
+            document.getElementById('unit').innerHTML = 'no unit selected';
+        else
+            document.getElementById('unit').innerHTML = state.unit.type.name;
     } 
     else if (state.type == 'position') {
         document.getElementById('mapX').innerHTML = state.centerX;
@@ -49,8 +53,10 @@ div {
         <div id="State">
             x: <div id="markX"></div> - 
             y: <div id="markY"></div> -
-            Type: <div id="markType"></div>
-            Map coords: <div id="mapX"></div>/<div id="mapY"></div>
+            Type: <div id="markType"></div><br/>
+            Selected unit: <div id="unit"></div><br/>
+            Map coords: <div id="mapX"></div>/<div id="mapY"></div></br/>
+
         </div>
     </body>
 </html>

@@ -9,7 +9,8 @@ function Battlefield(elem, width, height, tileSize, notify) {
                 type: 'marked',
                 x: marked.x,
                 y: marked.y,
-                name: battleField[marked.x][marked.y].type.name
+                name: battleField[marked.x][marked.y].type.name,
+                unit: battleField[marked.x][marked.y].unit
                 });
     }
 
