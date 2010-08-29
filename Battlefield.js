@@ -42,6 +42,8 @@ function Battlefield(elem, width, height, tileSize, notify) {
             }
         }
 
+        context.canvas.oncontextmenu = function() {return false};
+
         function click(e) {
             var relX = 0;
             var relY = 0;
