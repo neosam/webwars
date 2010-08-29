@@ -22,6 +22,12 @@ function init() {
     var water = {name: 'water', img: new Image()};
     water.img.src = 'water.jpg';
     battlefield.setField(water, 1, 1);
+
+    var soldierType = {img: new Image(), name: 'soldier'};
+    soldierType.img.src = 'soldier.png';
+    var soldier = {type: soldierType};
+    battlefield.setUnit(soldier, 3, 3);
+
     battlefield.draw();
 }
         </script>

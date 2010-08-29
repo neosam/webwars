@@ -88,6 +88,11 @@ function Battlefield(elem, width, height, tileSize, notify) {
                     context.drawImage(battleField[x][y].type.img,
                         (x - position.x) * tileSize, 
                         (y - position.y) * tileSize);
+                    if (battleField[x][y].unit != undefined) {
+                        context.drawImage(battleField[x][y].unit.type.img,
+                            (x - position.x) * tileSize, 
+                            (y - position.y) * tileSize);
+                    }
                 } catch (e) {
                     context.fillRect((x - position.x) * tileSize,
                                     (y - position.y) * tileSize,
@@ -106,8 +111,15 @@ function Battlefield(elem, width, height, tileSize, notify) {
         var offsetX = Math.floor(context.canvas.width / tileSize / 2);
         var offsetY = Math.floor(context.canvas.height / tileSize / 2);
         position = {x: x - offsetX, y: y - offsetY};
+        draw();
     }
     this.centerMapOn = centerMapOn;
+
+    function setUnit(unit, x, y) {
+        battleField[x][y].unit = unit;
+        draw();
+    }
+    this.setUnit = setUnit;
 
     initBattlefield();
 }
