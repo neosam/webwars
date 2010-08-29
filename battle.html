@@ -9,6 +9,10 @@ function notify(state) {
         document.getElementById('markType').innerHTML = state.name;
         document.getElementById('markX').innerHTML = state.x;
         document.getElementById('markY').innerHTML = state.y;
+    } 
+    else if (state.type == 'position') {
+        document.getElementById('mapX').innerHTML = state.centerX;
+        document.getElementById('mapY').innerHTML = state.centerY;
     }
 }
 
@@ -25,17 +29,22 @@ function init() {
 div {
     display: inline;
 }
+
+#gamefield {
+    border: 1px black solid;
+}
         </style>
     </head>
     <body onload="init()">
         <h1>Webwars Gamefield</h1>
-        <canvas id="gamefield" width="640" height="480">
+        <canvas id="gamefield" width="640" height="480" oncontextmenu="return false;">
             Sorry your browser doesn't support html5.
         </canvas><br />
         <div id="State">
             x: <div id="markX"></div> - 
             y: <div id="markY"></div> -
             Type: <div id="markType"></div>
+            Map coords: <div id="mapX"></div>/<div id="mapY"></div>
         </div>
     </body>
 </html>

@@ -13,6 +13,18 @@ function Battlefield(elem, width, height, tileSize, notify) {
                 });
     }
 
+    function notifyPosition() {
+        var offsetX = context.canvas.width / tileSize / 2;
+        var offsetY = context.canvas.width / tileSize / 2;
+        notify({
+                type: 'position',
+                x: position.x,
+                y: position.y,
+                centerX: position.x + offsetX,
+                centerY: position.y + offsetY,
+                });
+    }
+
     function initBattlefield() {
         var grass = new Image();
         grass.src = 'grass.jpg';
@@ -31,21 +43,41 @@ function Battlefield(elem, width, height, tileSize, notify) {
         }
 
         function click(e) {
-            var x = Math.floor(e.offsetX / tileSize);
-            var y = Math.floor(e.offsetY / tileSize);
-            marked = {x: x, y: y};
-            notifyMarked();
+            var relX = 0;
+            var relY = 0;
+            if (e.offsetX != undefined) { /* Netkit */
+                relX = e.offsetX;
+                relY = e.offsetY;
+            } else if (e.view != undefined) { /* Gecko */
+                relX = e.clientX - this.offsetLeft;
+                relY = e.clientY - this.offsetTop;
+            }
+            var x = Math.floor(relX / tileSize) + position.x;
+            var y = Math.floor(relY / tileSize) + position.y;
+            switch (e.button) {
+            case 0: /* Mark field on left mouse button */
+                marked = {x: x, y: y};
+                notifyMarked();
+                draw();
+                break;
+            case 1: /* Center map on middle click */
+                centerMapOn(x, y);
+                notifyPosition();
+                draw();
+                break;
+            }
         }
         elem.onmousedown = click;
 
         notifyMarked();
+        notifyPosition();
     }
 
     this.setField = function(field, x, y) {
         battleField[x][y].type = field;
     }
 
-    this.draw = function() {
+    function draw() {
         var drawX = context.canvas.width / tileSize;
         var drawY = context.canvas.height / tileSize;
         for (var x = position.x; x < drawX + position.x; x++) {
@@ -55,7 +87,9 @@ function Battlefield(elem, width, height, tileSize, notify) {
                         (x - position.x) * tileSize, 
                         (y - position.y) * tileSize);
                 } catch (e) {
-                    
+                    context.fillRect((x - position.x) * tileSize,
+                                    (y - position.y) * tileSize,
+                                    tileSize, tileSize);
                 }
 /*                if (this.unitGamefield[x][y] != null)
                     context.drawImage(this.unitGamefield[x][y].image,
@@ -64,6 +98,14 @@ function Battlefield(elem, width, height, tileSize, notify) {
             }
         }
     }
+    this.draw = draw;
+
+    function centerMapOn(x, y) {
+        var offsetX = Math.round(context.canvas.width / tileSize / 2);
+        var offsetY = Math.round(context.canvas.height / tileSize / 2);
+        position = {x: x - offsetX, y: y - offsetY};
+    }
+    this.centerMapOn = centerMapOn;
 
     initBattlefield();
 }
