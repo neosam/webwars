@@ -103,8 +103,8 @@ function Battlefield(elem, width, height, tileSize, notify) {
     this.draw = draw;
 
     function centerMapOn(x, y) {
-        var offsetX = Math.round(context.canvas.width / tileSize / 2);
-        var offsetY = Math.round(context.canvas.height / tileSize / 2);
+        var offsetX = Math.floor(context.canvas.width / tileSize / 2);
+        var offsetY = Math.floor(context.canvas.height / tileSize / 2);
         position = {x: x - offsetX, y: y - offsetY};
     }
     this.centerMapOn = centerMapOn;
