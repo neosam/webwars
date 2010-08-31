@@ -26,6 +26,17 @@ function Battlefield(elem, width, height, tileSize, notify) {
                 });
     }
 
+    function notifyUnitMove(x, y) {
+        notify({
+                type: 'unitMove',
+                fromX: marked.x,
+                fromY: marked.y,
+                toX: x,
+                toY: y,
+                unit: battleField[x][y].unit
+                });
+    }
+
     function clearHighlights() {
         for (var x = 0; x < width; x++) 
             for (var y = 0; y < height; y++) 
@@ -49,6 +60,16 @@ function Battlefield(elem, width, height, tileSize, notify) {
                 }
             }
         }
+    }
+
+    function moveUnit(x1, y1, x2, y2) {
+        if (x1 == x2 && y1 == y2)
+            return;
+        if (battleField[x1][y1] == undefined)
+            return;
+        battleField[x2][y2].unit = battleField[x1][y1].unit;
+        battleField[x1][y1].unit = undefined;
+        clearHighlights();
     }
 
     function initBattlefield() {
@@ -93,6 +114,16 @@ function Battlefield(elem, width, height, tileSize, notify) {
             case 1: /* Center map on middle click */
                 centerMapOn(x, y);
                 notifyPosition();
+                draw();
+                break;
+            case 2: /* Move unit */
+                if (!battleField[x][y].highlight)
+                    break;
+                moveUnit(marked.x, marked.y, x, y);
+                notifyUnitMove(x, y);
+                marked.x = x;
+                marked.y = y;
+                updateUnitWaypath();
                 draw();
                 break;
             }

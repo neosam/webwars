@@ -18,6 +18,13 @@ function notify(state) {
         document.getElementById('mapX').innerHTML = state.centerX;
         document.getElementById('mapY').innerHTML = state.centerY;
     }
+    else if (state.type == 'unitMove') {
+        document.getElementById('fromX').innerHTML = state.fromX;
+        document.getElementById('fromY').innerHTML = state.fromY;
+        document.getElementById('toX').innerHTML = state.toX;
+        document.getElementById('toY').innerHTML = state.toY;
+        document.getElementById('unitName').innerHTML = state.unit.type.name;
+    }
 }
 
 function init() {
@@ -55,8 +62,10 @@ div {
             y: <div id="markY"></div> -
             Type: <div id="markType"></div><br/>
             Selected unit: <div id="unit"></div><br/>
-            Map coords: <div id="mapX"></div>/<div id="mapY"></div></br/>
-
+            Map coords: <div id="mapX"></div>/<div id="mapY"></div><br/>
+            Last move: <div id="unitName"></div> moved from
+            <div id="fromX"></div>/<div id="fromY"></div> to
+            <div id="toX"></div>/<div id="toY"></div>
         </div>
     </body>
 </html>
