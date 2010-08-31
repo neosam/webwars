@@ -29,7 +29,7 @@ function init() {
 
     var soldierType = {img: new Image(), name: 'soldier', range: 3};
     soldierType.img.src = 'soldier.png';
-    var soldier = {type: soldierType};
+    var soldier = {type: soldierType, rangeLeft: 3};
     battlefield.setUnit(soldier, 3, 3);
 
     battlefield.draw();

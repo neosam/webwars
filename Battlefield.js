@@ -36,11 +36,13 @@ function Battlefield(elem, width, height, tileSize, notify) {
         clearHighlights();
         if (battleField[marked.x][marked.y].unit == undefined) 
             return;
-        var type = battleField[marked.x][marked.y].unit.type;
-        for (var x = marked.x - type.range; x <= marked.x + type.range; 
+        var unit = battleField[marked.x][marked.y].unit;
+        var type = unit.type;
+        for (var x = marked.x - unit.rangeLeft; x <= marked.x + unit.rangeLeft; 
                                                             x++) {
-            for (var y = marked.y - type.range; y <= marked.y + type.range;
-                                                            y++) {
+            for (var y = marked.y - unit.rangeLeft; 
+                                    y <= marked.y + unit.rangeLeft;
+                                    y++) {
                 try {
                     battleField[x][y].highlight = true;
                 } catch (e) {
