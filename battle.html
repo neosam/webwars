@@ -22,12 +22,12 @@ function notify(state) {
 
 function init() {
     var battlefield = new Battlefield(
-        document.getElementById('gamefield'), 10, 10, 32, notify);
+        document.getElementById('gamefield'), 100, 100, 32, notify);
     var water = {name: 'water', img: new Image()};
     water.img.src = 'water.jpg';
     battlefield.setField(water, 1, 1);
 
-    var soldierType = {img: new Image(), name: 'soldier'};
+    var soldierType = {img: new Image(), name: 'soldier', range: 3};
     soldierType.img.src = 'soldier.png';
     var soldier = {type: soldierType};
     battlefield.setUnit(soldier, 3, 3);

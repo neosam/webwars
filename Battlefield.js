@@ -15,8 +15,8 @@ function Battlefield(elem, width, height, tileSize, notify) {
     }
 
     function notifyPosition() {
-        var offsetX = context.canvas.width / tileSize / 2;
-        var offsetY = context.canvas.width / tileSize / 2;
+        var offsetX = Math.floor(context.canvas.width / tileSize / 2);
+        var offsetY = Math.floor(context.canvas.height / tileSize / 2);
         notify({
                 type: 'position',
                 x: position.x,
@@ -24,6 +24,29 @@ function Battlefield(elem, width, height, tileSize, notify) {
                 centerX: position.x + offsetX,
                 centerY: position.y + offsetY,
                 });
+    }
+
+    function clearHighlights() {
+        for (var x = 0; x < width; x++) 
+            for (var y = 0; y < height; y++) 
+                battleField[x][y].highlight = false;
+    }
+
+    function updateUnitWaypath() {
+        clearHighlights();
+        if (battleField[marked.x][marked.y].unit == undefined) 
+            return;
+        var type = battleField[marked.x][marked.y].unit.type;
+        for (var x = marked.x - type.range; x <= marked.x + type.range; 
+                                                            x++) {
+            for (var y = marked.y - type.range; y <= marked.y + type.range;
+                                                            y++) {
+                try {
+                    battleField[x][y].highlight = true;
+                } catch (e) {
+                }
+            }
+        }
     }
 
     function initBattlefield() {
@@ -43,6 +66,7 @@ function Battlefield(elem, width, height, tileSize, notify) {
             }
         }
 
+        clearHighlights();
         context.canvas.oncontextmenu = function() {return false};
 
         function click(e) {
@@ -60,6 +84,7 @@ function Battlefield(elem, width, height, tileSize, notify) {
             switch (e.button) {
             case 0: /* Mark field on left mouse button */
                 marked = {x: x, y: y};
+                updateUnitWaypath();
                 notifyMarked();
                 draw();
                 break;
@@ -94,7 +119,14 @@ function Battlefield(elem, width, height, tileSize, notify) {
                             (x - position.x) * tileSize, 
                             (y - position.y) * tileSize);
                     }
+                    if (battleField[x][y].highlight) {
+                        context.fillStyle = 'rgba(0, 0, 255, .5)';
+                        context.fillRect((x - position.x) * tileSize,
+                                        (y - position.y) * tileSize,
+                                        tileSize, tileSize);
+                    }
                 } catch (e) {
+                    context.fillStyle = '#000';
                     context.fillRect((x - position.x) * tileSize,
                                     (y - position.y) * tileSize,
                                     tileSize, tileSize);
